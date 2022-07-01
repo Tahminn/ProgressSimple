@@ -25,7 +25,7 @@ namespace ProgressSimple.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Item>>> GetItems()
         {
-            return await _context.Items.ToListAsync();
+            return await _context.Items.OrderByDescending(i => i.Id).ToListAsync();
         }
 
         // GET: api/Items/5
@@ -44,13 +44,13 @@ namespace ProgressSimple.Controllers
 
         // PUT: api/Items/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPut("{id}")]
-        public async Task<IActionResult> PutItem(int id, Item item)
+        [HttpPut]
+        public async Task<IActionResult> PutItem(/*int id, */Item item)
         {
-            if (id != item.Id)
-            {
-                return BadRequest();
-            }
+            //if (id != item.Id)
+            //{
+            //    return BadRequest();
+            //}
 
             _context.Entry(item).State = EntityState.Modified;
 
@@ -60,7 +60,7 @@ namespace ProgressSimple.Controllers
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!ItemExists(id))
+                if (!ItemExists(item.Id))
                 {
                     return NotFound();
                 }
