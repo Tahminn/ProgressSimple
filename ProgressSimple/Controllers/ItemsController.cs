@@ -21,14 +21,12 @@ namespace ProgressSimple.Controllers
             _context = context;
         }
 
-        // GET: api/Items
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Item>>> GetItems()
         {
             return await _context.Items.OrderByDescending(i => i.Id).ToListAsync();
         }
 
-        // GET: api/Items/5
         [HttpGet("{id}")]
         public async Task<ActionResult<Item>> GetItem(int id)
         {
@@ -42,16 +40,9 @@ namespace ProgressSimple.Controllers
             return item;
         }
 
-        // PUT: api/Items/5
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut]
-        public async Task<IActionResult> PutItem(/*int id, */Item item)
+        public async Task<IActionResult> PutItem(Item item)
         {
-            //if (id != item.Id)
-            //{
-            //    return BadRequest();
-            //}
-
             _context.Entry(item).State = EntityState.Modified;
 
             try
@@ -69,26 +60,24 @@ namespace ProgressSimple.Controllers
                     throw;
                 }
             }
-
             return NoContent();
         }
 
-        // POST: api/Items
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
         public async Task<ActionResult<Item>> PostItem(Item item)
         {
             _context.Items.Add(item);
+
             await _context.SaveChangesAsync();
 
             return CreatedAtAction("GetItem", new { id = item.Id }, item);
         }
 
-        // DELETE: api/Items/5
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteItem(int id)
         {
             var item = await _context.Items.FindAsync(id);
+
             if (item == null)
             {
                 return NotFound();
