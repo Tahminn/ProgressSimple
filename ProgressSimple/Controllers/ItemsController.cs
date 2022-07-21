@@ -1,11 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using ProgressSimple;
 using Repository.Data;
 
 namespace ProgressSimple.Controllers
@@ -41,9 +35,11 @@ namespace ProgressSimple.Controllers
         }
 
         [HttpPut]
-        public async Task<IActionResult> PutItem(Item item)
+        public async Task<IActionResult> PutItem(Item itemModel)
         {
-            _context.Entry(item).State = EntityState.Modified;
+            Item item = new Item { Id = itemModel.Id };
+            _context.Items.Attach(item);
+            _context.Entry(item).CurrentValues.SetValues(itemModel);
 
             try
             {
